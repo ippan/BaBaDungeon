@@ -1,0 +1,96 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://materials/wall.tres" type="Material" id=1]
+
+[sub_resource type="QuadMesh" id=1]
+
+size = Vector2( 1, 1 )
+
+[node name="wall" type="Spatial"]
+
+[node name="model" type="MeshInstance" parent="."]
+
+transform = Transform( 1, 0, 0, 0, 0.25, 0, 0, 0, 1, 0, 0.125, 0.05 )
+layers = 1
+material_override = null
+cast_shadow = 1
+extra_cull_margin = 0.0
+use_in_baked_light = false
+lod_min_distance = 0.0
+lod_min_hysteresis = 0.0
+lod_max_distance = 0.0
+lod_max_hysteresis = 0.0
+mesh = SubResource( 1 )
+skeleton = NodePath("..")
+material/0 = ExtResource( 1 )
+_sections_unfolded = [ "Transform", "material" ]
+
+[node name="model2" type="MeshInstance" parent="."]
+
+transform = Transform( -1, 0, -8.74228e-08, 0, 0.25, 0, 8.74228e-08, 0, -1, 0, 0.125, -0.05 )
+layers = 1
+material_override = null
+cast_shadow = 1
+extra_cull_margin = 0.0
+use_in_baked_light = false
+lod_min_distance = 0.0
+lod_min_hysteresis = 0.0
+lod_max_distance = 0.0
+lod_max_hysteresis = 0.0
+mesh = SubResource( 1 )
+skeleton = NodePath("..")
+material/0 = ExtResource( 1 )
+_sections_unfolded = [ "Transform", "material" ]
+
+[node name="model3" type="MeshInstance" parent="."]
+
+transform = Transform( -4.37114e-09, 0, 1, 0, 0.25, 0, -0.1, 0, -4.37114e-08, 0.5, 0.125, 0 )
+layers = 1
+material_override = null
+cast_shadow = 1
+extra_cull_margin = 0.0
+use_in_baked_light = false
+lod_min_distance = 0.0
+lod_min_hysteresis = 0.0
+lod_max_distance = 0.0
+lod_max_hysteresis = 0.0
+mesh = SubResource( 1 )
+skeleton = NodePath("..")
+material/0 = ExtResource( 1 )
+_sections_unfolded = [ "Transform", "material" ]
+
+[node name="model4" type="MeshInstance" parent="."]
+
+transform = Transform( -4.37114e-09, 0, -1, 0, 0.25, 0, 0.1, 0, -4.37114e-08, -0.5, 0.125, 0 )
+layers = 1
+material_override = null
+cast_shadow = 1
+extra_cull_margin = 0.0
+use_in_baked_light = false
+lod_min_distance = 0.0
+lod_min_hysteresis = 0.0
+lod_max_distance = 0.0
+lod_max_hysteresis = 0.0
+mesh = SubResource( 1 )
+skeleton = NodePath("..")
+material/0 = ExtResource( 1 )
+_sections_unfolded = [ "Geometry", "Transform", "material" ]
+
+[node name="model5" type="MeshInstance" parent="."]
+
+transform = Transform( 1, 0, 0, 0, -4.37114e-09, 1, 0, -0.1, -4.37114e-08, 0, 0.25, 0 )
+layers = 1
+material_override = null
+cast_shadow = 1
+extra_cull_margin = 0.0
+use_in_baked_light = false
+lod_min_distance = 0.0
+lod_min_hysteresis = 0.0
+lod_max_distance = 0.0
+lod_max_hysteresis = 0.0
+mesh = SubResource( 1 )
+skeleton = NodePath("..")
+material/0 = ExtResource( 1 )
+_sections_unfolded = [ "Transform", "material" ]
+
+
