@@ -1,7 +1,7 @@
 extends "trap.gd"
 
 func animate(t):
-	if t < 0.5:
+	if t < 0.25:
 		animation_node.visible = true
 		animation_node.rotation_degrees = Vector3(0.0, (randi() % 4) * 90, 0.0)
 	else:

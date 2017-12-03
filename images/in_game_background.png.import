@@ -2,11 +2,11 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/ghost01.png-8b7300521d839e8eb447a26a297f8010.stex"
+path="res://.import/in_game_background.png-c927668ef0a4e29fce7a69b100496c8b.stex"
 
 [deps]
 
-source_md5="85cc9553a35d11ba855a256f89850e51"
+source_md5="df400516a8a92911e12008515fc9f73f"
 
 [params]
 
@@ -15,7 +15,7 @@ compress/lossy_quality=0.7
 compress/hdr_mode=0
 compress/normal_map=0
 flags/repeat=0
-flags/filter=false
+flags/filter=true
 flags/mipmaps=false
 flags/anisotropic=false
 flags/srgb=0

@@ -5,6 +5,8 @@ const FloatingLabel = preload("res://components/floating_label.tscn")
 export var speed = 1.0
 export var hp = 5
 export var price = 5
+export var diamond = false
+export var resistant = false
 
 var path = null
 
@@ -89,7 +91,7 @@ class NormalState extends State:
 	
 	func on_animation_update(delta):
 		.on_animation_update(delta)
-		ghost.sprite_node.translation = Vector3(0, sin(animation_elapsed * ghost.speed * PI * 3.0) / 8.0 + 0.375, 0)
+		ghost.sprite_node.translation = Vector3(0, sin(animation_elapsed * ghost.speed * PI * 3.0) / 8.0 + 0.5, 0)
 		
 	func get_block():
 		if ghost.path == null:
@@ -102,18 +104,29 @@ class NormalState extends State:
 
 	func on_effect(effect):
 		if effect.damage > 0:
-			return on_hit(effect.damage)
+			var damage = effect.damage
+			
+			if ghost.resistant:
+				damage = damage / 2
+			
+			if damage == 0:
+				damage = 1
+			
+			return on_hit(damage)
 
 	func create_floating_label():
 		var label = FloatingLabel.instance()
+		label.offset = Vector2(20, -30)
 		ghost.add_child(label)
-		label.set_color(Color(1.0, 0.0, 0.0))
-		label.set_number(10)
-		label.set_size(30)
+		label.set_color(Color(1.0, 0.5, 0.5))
+		label.set_size(18)
+		return label
 
 	func on_hit(damage):
 		ghost.hp -= damage
-		create_floating_label()
+		var label = create_floating_label()
+		label.set_number(-damage)
+		
 		if ghost.hp < 0:
 			return "dying"
 
@@ -131,20 +144,26 @@ class NormalState extends State:
 			elapsed *= 0.5
 
 class FlyingState extends State:
+	
 	func on_update(delta):
 		.on_update(delta)
+		
+		var start = ghost.path[0]
+		var target = ghost.path[1]
+		
+		ghost.translation = Vector3(lerp(start.x, target.x, elapsed), 1.0 - pow(2.0 * (elapsed - 0.5), 2), lerp(start.y, target.y, elapsed))
+		
+		if elapsed > 1.0:
+			return "lost"
 
 class LostState extends State:
 	func on_enter():
 		.on_enter()
-		ghost.path = null
+		ghost.event_handler.on_ghost_lost(ghost)
 		
 	func on_update(delta):
 		.on_update(delta)
-		
-		if ghost.path != null:
-			return "normal"
-		return null
+		return "normal"
 
 class DyingState extends State:
 	func on_enter():
@@ -152,7 +171,11 @@ class DyingState extends State:
 	
 	func on_update(delta):
 		.on_update(delta)
-		if elapsed > 3.0:
+		
+		ghost.get_node("sprite").translation.y += delta
+		ghost.get_node("sprite").material_override.albedo_color.a = 1.0 - elapsed
+		
+		if elapsed > 1.0:
 			ghost.event_handler.on_ghost_dead(ghost)
 			ghost.queue_free()
 
@@ -169,6 +192,8 @@ func _ready():
 		states[name].ghost = self
 	
 	states[current_state].on_enter()
+	
+	$sprite.material_override = $sprite.material_override.duplicate()
 
 func get_block():
 	return states[current_state].get_block()
@@ -181,7 +206,6 @@ func change_color(color, duration = -1.0):
 	if color_count_down > 0.0:
 		return
 	
-	$sprite.material_override = $sprite.material_override.duplicate()
 	$sprite.material_override.albedo_color = color
 	color_count_down = duration
 

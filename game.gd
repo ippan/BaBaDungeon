@@ -24,7 +24,7 @@ var elapsed = 0
 
 var active_tool = null
 
-var money = 1000
+var money = 600
 
 var ghost_query
 
@@ -53,6 +53,9 @@ class GhostQuery:
 				blocks[block.y * width + block.x].append(ghost)
 				
 	func get_ghosts(x, y):
+		if x < 0 or x >= width or y < 0 or y >= height:
+			return []
+		
 		return blocks[y * width + x]
 
 class State:
@@ -90,13 +93,17 @@ class WaveState extends State:
 		wave += 1
 		game.get_node("hud/wave").show()
 		game.get_node("hud/wave/number").set_number(wave)
+		game.get_node("hud/wave_top").hide()
+		game.get_node("hud/wave_top/number").set_number(wave)
 		game.level_data.set_wave(wave)
+		game.show_control(false)
 	
 	func on_update():
 		if get_elapsed() < 3.0:
 			return null
 		
 		game.get_node("hud/wave").hide()
+		game.get_node("hud/wave_top").show()
 		
 		return "game_play"
 
@@ -128,30 +135,47 @@ class GamePlayState extends State:
 		
 		game.money -= game.active_tool.data.price
 		
-		var trap = game.active_tool.data.trap_scene.instance()
-		trap.data = game.active_tool.data
+		var trap = game.active_tool.data.create(false)
 		trap.ghost_query = game.ghost_query
 		trap.active = true
 		floor_instance.add_child(trap)
 		floor_instance.trap = trap
 		game.active_tool.visible = false
+		
+		game.get_node("trap_detail").set_trap_detail(game.active_tool.data)
 	
 	func on_enter():
 		.on_enter()
-		game.add_diamond()
-		game.add_diamond()
+		game.show_control(true)
 		start_block = game.maze.get_block(game.maze.width - 1, 0)
 	
 	func on_ghost_dead(ghost):
 		game.money += ghost.price
+		if ghost.diamond:
+			game.add_diamond()
 	
 	func on_ghost_arrived(ghost):
-		pass
+		game.change_state("game_over")
+	
+	func on_ghost_lost(ghost):
+		var position = ghost.path[1]
+		var block = game.maze.get_block(position.x, position.y)
+		if block == null:
+			ghost.change_state("dying")
+			return
+			
+		ghost.set_path(find_ghost_path(block))
+	
+	func find_ghost_path(start_block):
+		var target = get_random_diamon_position()
+		return game.maze.find_path(start_block.x, start_block.y, target.x, target.y)
 	
 	func on_update():
 		
 		if game.level_data.is_wave_end():
 			if game.ghosts_node.get_child_count() == 0:
+				if game.level_data.is_last_wave():
+					return "win"
 				return "wave"
 			return
 		
@@ -163,10 +187,7 @@ class GamePlayState extends State:
 		ghost.event_handler = self
 		
 		game.ghosts_node.add_child(ghost)
-		var target = get_random_diamon_position()
-		ghost.speed = 0.5
-		var path = game.maze.find_path(start_block.x, start_block.y, target.x, target.y)
-		ghost.set_path(path)
+		ghost.set_path(find_ghost_path(start_block))
 		
 	func get_random_diamon_position():
 		var index = randi() % game.diamonds.size()
@@ -175,12 +196,21 @@ class GamePlayState extends State:
 class GameOverState extends State:
 	func on_enter():
 		.on_enter()
-		
+		get_hud_node().show()
+		game.show_control(false)
+	
+	func get_hud_node():
+		return game.get_node("hud/game_over")
+	
 	func on_update():
-		if get_elapsed() < 3.0:
+		if get_elapsed() < 5.0:
 			return
+			
+		game.get_tree().change_scene("res://title.tscn")
 		
-		
+class WinState extends GameOverState:
+	func get_hud_node():
+		return game.get_node("hud/win")
 
 var states = {}
 var current_state = "ready"
@@ -190,6 +220,8 @@ func create_states():
 	states["wave"] = WaveState.new()
 	states["game_play"] = GamePlayState.new()
 	states["game_play"].wave_state = states["wave"]
+	states["game_over"] = GameOverState.new()
+	states["win"] = WinState.new()
 	
 	for name in states:
 		states[name].game = self
@@ -214,12 +246,28 @@ func _ready():
 	
 	level_data = Level.new(level)
 
+func change_state(state_name):
+	if state_name == null:
+		return
+	
+	if state_name == current_state:
+		return
+		
+	current_state = state_name
+	states[current_state].on_enter()
+
+func show_control(value):
+	if value:
+		$trap_buttons.show()
+		if active_tool != null:
+			$trap_detail.show()
+	else:
+		$trap_buttons.hide()
+		$trap_detail.hide()
+
 func _physics_process(delta):
 	elapsed += delta
-	var next_state = states[current_state].on_update()
-	if next_state != null:
-		current_state = next_state
-		states[current_state].on_enter()
+	change_state(states[current_state].on_update())
 		
 	ghost_query.update(ghosts_node.get_children())
 	money_node.set_number(money)

@@ -70,11 +70,23 @@ class Block:
 	func equal(target):
 		return x == target.x and y == target.y
 
+	func is_neighbor(target):
+		return get_neighbor(target) != null
+		
+	func get_neighbor(target):
+		for neighbor in neighbors:
+			if neighbor.equal(target):
+				return neighbor
+		return null
+
 var blocks
 var width
 var height
 
 func get_block(x, y):
+	if x < 0 or x >= width or y < 0 or y >= height:
+		return null
+	
 	return blocks[y * width + x]
 
 func create(maze_width, maze_height):

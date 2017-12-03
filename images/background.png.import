@@ -2,20 +2,20 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/ghost01.png-8b7300521d839e8eb447a26a297f8010.stex"
+path="res://.import/background.png-23e4ff24ed3606e496e606d42ded004c.stex"
 
 [deps]
 
-source_md5="85cc9553a35d11ba855a256f89850e51"
+source_md5="7968f6f2d62a2b31ee2e2637947b5d5c"
 
 [params]
 
 compress/mode=0
 compress/lossy_quality=0.7
 compress/hdr_mode=0
-compress/normal_map=0
+compress/normal_map=2
 flags/repeat=0
-flags/filter=false
+flags/filter=true
 flags/mipmaps=false
 flags/anisotropic=false
 flags/srgb=0

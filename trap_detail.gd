@@ -8,8 +8,8 @@ func set_trap_detail(trap_button):
 	
 	var upgrade_price = trap_button.get_upgrade_price()
 	
-	if upgrade_price == null or not trap_button.can_upgrade:
-		$upgrade/upgrade_price.hide()
+	if upgrade_price == null or not trap_button.check_can_upgrade():
+		$upgrade.hide()
 	else:
-		$upgrade/upgrade_price.show()
+		$upgrade.show()
 		$upgrade/upgrade_price.set_number(trap_button.get_upgrade_price())

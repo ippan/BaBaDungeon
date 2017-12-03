@@ -11,7 +11,7 @@ config_version=3
 [application]
 
 config/name="BaBaDungeon"
-run/main_scene="res://game.tscn"
+run/main_scene="res://title.tscn"
 config/icon="res://icon.png"
 run/disable_stdout.release=true
 run/disable_stderr.release=true

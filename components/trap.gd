@@ -19,12 +19,15 @@ func change_color(color):
 		child.material_override = child.material_override.duplicate()
 		child.material_override.albedo_color = color
 
+func get_interval():
+	if data == null:
+		return 1.0
+	return data.get_interval()
+
 func _physics_process(delta):
 	elapsed += delta
 
-	var interval = 2.0
-	if data != null:
-		interval = data.get_interval()
+	var interval = get_interval()
 
 	if elapsed > interval:
 		elapsed -= interval
@@ -32,7 +35,7 @@ func _physics_process(delta):
 		if active:
 			logic()
 
-	var t = 1
+	var t = 0
 	if interval > 0:
 		t = elapsed / interval
 

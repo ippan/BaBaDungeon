@@ -2,11 +2,11 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/ghost01.png-8b7300521d839e8eb447a26a297f8010.stex"
+path="res://.import/trap06.png-dacc4918a9bd52b5f3c1a4354a4a5939.stex"
 
 [deps]
 
-source_md5="85cc9553a35d11ba855a256f89850e51"
+source_md5="4a8f0c34396c34e96fbce3f5b1827e9d"
 
 [params]
 
@@ -15,10 +15,10 @@ compress/lossy_quality=0.7
 compress/hdr_mode=0
 compress/normal_map=0
 flags/repeat=0
-flags/filter=false
+flags/filter=true
 flags/mipmaps=false
 flags/anisotropic=false
-flags/srgb=0
+flags/srgb=2
 process/fix_alpha_border=true
 process/premult_alpha=false
 process/HDR_as_SRGB=false

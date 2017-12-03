@@ -6,6 +6,9 @@ var next_elapsed = 0
 
 var effect_color = Color(0.3, 1.0, 0.3, 1.0)
 
+func get_interval():
+	return 0
+
 func animate(t):
 	if elapsed < next_elapsed:
 		return
@@ -18,5 +21,5 @@ func logic():
 	for ghost in ghost_query.get_ghosts(block.x, block.y):
 		if not ghost.effects.has("poison"):
 			ghost.change_color(effect_color, 1.0 / ghost.speed)
-		ghost.add_effect("poison", 10.0, effect_color, 0.0)
+		ghost.add_effect("poison", data.get_interval(), effect_color, data.get_attack())
 		

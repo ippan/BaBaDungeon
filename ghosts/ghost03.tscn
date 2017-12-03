@@ -1,0 +1,16 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://components/ghost.tscn" type="PackedScene" id=1]
+[ext_resource path="res://images/ghost03.png" type="Texture" id=2]
+
+[node name="ghost03" instance=ExtResource( 1 )]
+
+speed = 0.4
+hp = 100
+price = 100
+
+[node name="sprite" parent="."]
+
+texture = ExtResource( 2 )
+
+

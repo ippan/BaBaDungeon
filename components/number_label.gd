@@ -15,6 +15,7 @@ func _ready():
 		numbers[str(i)] = load("res://images/%s.png" % i)
 	
 	numbers["."] = load("res://images/dot.png")
+	numbers["-"] = load("res://images/minus.png")
 
 func set_number(number):
 	if last_number != null and last_number == number:
